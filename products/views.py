@@ -2,6 +2,10 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib import messages
 from django.db.models import Q
 from .models import Product, Category
+import logging
+
+logger = logging.getLogger(__name__)
+logger.error('Testing')
 
 # Create your views here.
 def all_products(request):
@@ -12,15 +16,19 @@ def all_products(request):
     sort = None
     direction = None
 
+    logger.error('Currently on all_products view')
+
 
     if request.GET:
+        logger.info('received GET request')
         if 'sort' in request.GET:
             sortkey = request.GET['sort']
             sort = sortkey
             if sortkey == 'name':
                 sortkey = 'lower_name'
                 products = products.annotate(lower_name=Lower('name'))
-
+            if sortkey =='category':
+                sortkey = 'category__name'
             if 'direction' in request.GET:
                 direction = request.GET['direction']
                 if direction == 'desc':
