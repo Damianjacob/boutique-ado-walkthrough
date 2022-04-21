@@ -1,12 +1,11 @@
+from re import template
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib import messages
 from django.db.models import Q
 from .models import Product, Category
 from django.db.models.functions import Lower
-import logging
+from .forms import ProductForm
 
-logger = logging.getLogger(__name__)
-logger.error('Testing')
 
 # Create your views here.
 def all_products(request):
@@ -72,3 +71,14 @@ def product_detail(request, product_id):
     }
     
     return render(request, 'products/product_detail.html', context)
+
+
+def add_product(request):
+    """Add a product to the store"""
+    form = ProductForm
+    template = 'products/add_product.html'
+    context = {
+        'form': form,
+    }
+
+    return render(request, template, context)
